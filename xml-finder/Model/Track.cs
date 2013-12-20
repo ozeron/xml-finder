@@ -32,7 +32,11 @@ namespace xml_finder.Model
         public Track()
         {
             _trackPath = @"res/1.mp3";
+<<<<<<< HEAD
             var f = new FileInfo(_trackPath);
+=======
+            var f = new FileInfo("asddas");
+>>>>>>> 97d2e2b62d6232214b35abeea0e1c9b68472a19c
             if (!f.Exists)
                 throw new FileNotFoundException();
 
@@ -63,12 +67,18 @@ namespace xml_finder.Model
         {
             
             var player = new MediaPlayer();
+<<<<<<< HEAD
             
             var uri = new Uri(_trackFullPath);
             player.Open(uri);
             player.Play();
             
             //System.Diagnostics.Process.Start(_trackFullPath);
+=======
+            var uri = new Uri(_trackFullPath);
+            player.Open(uri);
+            player.Play();
+>>>>>>> 97d2e2b62d6232214b35abeea0e1c9b68472a19c
         }
     }
 }
