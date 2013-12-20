@@ -13,72 +13,156 @@ using File = System.IO.File;
 
 namespace xml_finder.Model
 {
-    internal class Track
+    internal class Track : ViewModel.ViewModelBase
     {
         private String _title;
-        private String _artist;
+        private String[] _artists;
         private String _album;
-        private String[] _genre;
+        private String[] _genres;
         private uint _year;
         private uint _trackCount;
 
-        private TimeSpan _duration;
-        private Int32 _bitRate;
+        private readonly TimeSpan _duration;
+        private readonly Int32 _bitRate;
 
-        private readonly String _trackPath;
         private readonly String _trackFullPath;
         private readonly TagLib.File _file;
 
-        public Track()
+        public String Title
         {
-            _trackPath = @"res/1.mp3";
-<<<<<<< HEAD
-            var f = new FileInfo(_trackPath);
-=======
-            var f = new FileInfo("asddas");
->>>>>>> 97d2e2b62d6232214b35abeea0e1c9b68472a19c
+            get { return _title; }
+            set
+            {
+                _title = value;
+                _file.Tag.Title = _title;
+                RaisePropertyChanged("Title");
+            }
+        }
+        public String Album
+        {
+            get { return _album; }
+            set
+            {
+                _album = value;
+                _file.Tag.Album = _album;
+                RaisePropertyChanged("Album");
+            }
+        }
+        public String[] Artists
+        {
+            get { return _artists; }
+            set
+            {
+                _artists = value;
+                _file.Tag.AlbumArtists = _artists;
+                RaisePropertyChanged("Artists");
+            }
+        }
+        public String[] Genres
+        {
+            get { return _genres; }
+            set
+            {
+                _genres = value;
+                _file.Tag.Genres= _genres;
+                RaisePropertyChanged("Genres");
+            }
+        }
+        public String FirstOfArtists
+        {
+            get { return (_artists != null) ? _artists[0] : null; }
+            set
+            {
+                _artists = new[] { value };
+                _file.Tag.AlbumArtists = _artists;
+                RaisePropertyChanged("FirstOfArtists");
+            }
+        }
+        public String FirstOfGenres
+        {
+            get { return (_genres == null) ? null : _genres[0]; }
+            set
+            {
+                _genres = new[] { value };
+                _file.Tag.Genres = _genres;
+                RaisePropertyChanged("FirstOfGenres");
+            }
+        }
+        
+        public uint Year
+        {
+            get { return _year; }
+            set
+            {
+                _year = value;
+                _file.Tag.Year = _year;
+                RaisePropertyChanged("Year");
+            }
+        }
+        public uint TrackCount
+        {
+            get { return _trackCount; }
+            set
+            {
+                _trackCount = value;
+                _file.Tag.Track = _trackCount;
+                RaisePropertyChanged("TrackCount");
+            }
+        }
+        public TimeSpan Duration
+        {
+            get { return _duration; }
+        }
+        public Int32 BitRate
+        {
+            get { return _bitRate; }
+        }
+        public String TrackFullPath
+        {
+            get { return _trackFullPath; }
+        }
+
+        public Track()
+            : this(@"res/1.mp3")
+        {
+        }
+
+        public Track(string path)
+        {
+            var f = new FileInfo(@path);
+
             if (!f.Exists)
-                throw new FileNotFoundException();
+                throw new FileNotFoundException(@"path");
 
             _trackFullPath = f.FullName;
 
-            _file = TagLib.File.Create(_trackPath);
-            ReadData();
-            OpenTrack();
-        }
+            _file = TagLib.File.Create(@path);
 
-        private void ReadData()
-        {
             _title = _file.Tag.Title;
-            _artist = _file.Tag.FirstAlbumArtist;
+            _artists = _file.Tag.AlbumArtists;
             _album = _file.Tag.Album;
-            _genre = _file.Tag.Genres;
+            _genres = _file.Tag.Genres;
             _year = _file.Tag.Year;
-            _trackCount = (_file.Tag.TrackCount == 0) ? _file.Tag.Track : _file.Tag.TrackCount;
+            _trackCount = _file.Tag.Track;
 
             _duration = _file.Properties.Duration;
             _bitRate = _file.Properties.AudioBitrate;
-            Debug.WriteLine(
-                "Title: {0}\nArtist: {1}\nAlbum: {2}\nYear: {3}\n#: {4}\nGenre: {5}\nDuration: {6}\nBitRate: {7}",
-                _title, _artist, _album, _year, _trackCount, _genre[0], _duration, _bitRate);
         }
 
-        private void OpenTrack()
+        public override string ToString()
         {
-            
-            var player = new MediaPlayer();
-<<<<<<< HEAD
-            
-            var uri = new Uri(_trackFullPath);
-            player.Open(uri);
-            player.Play();
-            
-            //System.Diagnostics.Process.Start(_trackFullPath);
-=======
-            var uri = new Uri(_trackFullPath);
-            player.Open(uri);
-            player.Play();
->>>>>>> 97d2e2b62d6232214b35abeea0e1c9b68472a19c
+            var str = new StringBuilder();
+            str.Append("Title: " + _title + "\n");
+            str.Append("Artists: " + _artists + "\n");
+            str.Append("Album: " + _album + "\n");
+            var st = String.Concat(
+                "Title: ", _title, "\nArtist: ", _artists, "\nAlbum: ", _album, "\n#", _trackCount, "\nYear: ", _year, 
+                "\nGenre: ", _genres[0], "\nDuration: ", _duration, "\nBitRate: ",
+                _bitRate);
+
+
+            return st;
         }
+
     }
 }

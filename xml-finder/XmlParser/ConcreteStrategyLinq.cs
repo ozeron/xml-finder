@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using System.Xml.Linq;
+using xml_finder.Model;
 
 namespace xml_finder.XmlParser
 {
@@ -32,40 +33,31 @@ namespace xml_finder.XmlParser
             //счетчик для номера композиции
             int trackId = 1;
             //Создание вложенными конструкторами.
-            var doc = new XDocument(
-                new XElement("library",
-                    new XElement("track",
-                        new XAttribute("id", trackId++),
-                        new XAttribute("genre", "Rap"),
-                        new XAttribute("time", "3:24"),
-                        new XElement("name", "Who We Be RMX (feat. 2Pac)"),
-                        new XElement("artist", "DMX"),
-                        new XElement("album", "The Dogz Mixtape: Who's Next?!")),
-                    new XElement("track",
-                        new XAttribute("id", trackId++),
-                        new XAttribute("genre", "Rap"),
-                        new XAttribute("time", "5:06"),
-                        new XElement("name", "Angel (ft. Regina Bell)"),
-                        new XElement("artist", "DMX"),
-                        new XElement("album", "...And Then There Was X")),
-                    new XElement("track",
-                        new XAttribute("id", trackId++),
-                        new XAttribute("genre", "Break Beat"),
-                        new XAttribute("time", "6:16"),
-                        new XElement("name", "Dreaming Your Dreams"),
-                        new XElement("artist", "Hybrid"),
-                        new XElement("album", "Wide Angle")),
-                    new XElement("track",
-                        new XAttribute("id", trackId++),
-                        new XAttribute("genre", "Break Beat"),
-                        new XAttribute("time", "9:38"),
-                        new XElement("name", "Finished Symphony"),
-                        new XElement("artist", "Hybrid"),
-                        new XElement("album", "Wide Angle"))));
-            //сохраняем наш документ
+            var doc = new XDocument();
+            var library = new XElement("library");
+            var files = Directory.GetFiles("res");
+            foreach (var file in files)
+            {
+                library.Add( AddTrack(file));
+            }
+            doc.Add(library);
             doc.Save(_filePath);
         }
 
+        public XElement AddTrack(String path)
+        {
+            var f = new FileInfo(path);
+            
+            if (!f.Exists)
+                return null;
+            var track = new Track(f.FullName);
+            return new XElement("Track", new XElement("Title",track.Title),
+                new XElement("Artist",track.FirstOfArtists), new XElement("Album",track.Album),
+                new XElement("Year",track.Year), new XElement("TrackCount",track.TrackCount),
+                new XElement("Genre", track.FirstOfGenres), new XElement("Duration",track.Duration),
+                new XElement("BitRate",track.BitRate));
+
+        }
         public void LoadDocument()
         {
             LoadDocument(FilePathBase);
