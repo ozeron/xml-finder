@@ -22,7 +22,7 @@ namespace xml_finder.Model
         private uint _year;
         private uint _trackCount;
 
-        private readonly TimeSpan _duration;
+        private readonly Time _duration;
         private readonly Int32 _bitRate;
 
         private readonly String _trackFullPath;
@@ -109,7 +109,7 @@ namespace xml_finder.Model
                 RaisePropertyChanged("TrackCount");
             }
         }
-        public TimeSpan Duration
+        public Time Duration
         {
             get { return _duration; }
         }
@@ -145,7 +145,8 @@ namespace xml_finder.Model
             _year = _file.Tag.Year;
             _trackCount = _file.Tag.Track;
 
-            _duration = _file.Properties.Duration;
+            var t = _file.Properties.Duration;
+            _duration = new Time(t.Hours,t.Minutes,t.Seconds);
             _bitRate = _file.Properties.AudioBitrate;
         }
 

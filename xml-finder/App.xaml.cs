@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using xml_finder.Model;
@@ -18,8 +19,8 @@ namespace xml_finder
     {
         void StartApp(object sender, StartupEventArgs e)
         {
-            var track = new Track();
-            
+            var parser = new ConcreteStrategyLinq();
+            this.Shutdown();
         }
     }
 }

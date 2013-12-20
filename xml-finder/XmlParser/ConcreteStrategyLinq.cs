@@ -35,10 +35,13 @@ namespace xml_finder.XmlParser
             //Создание вложенными конструкторами.
             var doc = new XDocument();
             var library = new XElement("library");
-            var files = Directory.GetFiles("res");
+            var files = Directory.GetFiles(@"D:\MUSIC\Eminem\The Marshall Mathers LP 2 [2013]\CD 1");
             foreach (var file in files)
             {
-                library.Add( AddTrack(file));
+                var fileInfo = new FileInfo(file);
+                var extension = fileInfo.Extension;
+                if (extension.Equals(".mp3"))
+                    library.Add( AddTrack(file)) ;
             }
             doc.Add(library);
             doc.Save(_filePath);
@@ -55,7 +58,7 @@ namespace xml_finder.XmlParser
                 new XElement("Artist",track.FirstOfArtists), new XElement("Album",track.Album),
                 new XElement("Year",track.Year), new XElement("TrackCount",track.TrackCount),
                 new XElement("Genre", track.FirstOfGenres), new XElement("Duration",track.Duration),
-                new XElement("BitRate",track.BitRate));
+                new XElement("BitRate",track.BitRate), new XElement("TrackFullPath",track.TrackFullPath));
 
         }
         public void LoadDocument()
