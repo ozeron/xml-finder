@@ -20,9 +20,14 @@
         <ListView ItemsSource="{Binding Tracks, UpdateSourceTrigger=PropertyChanged}" Grid.Row="2">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="Artist" DisplayMemberBinding="{Binding FirstOfArtists}"/>
+                    <GridViewColumn Header="Artist" DisplayMemberBinding="{Binding FirstOfArtists}" />
                     <GridViewColumn Header="Title" DisplayMemberBinding="{Binding Title}" />
                     <GridViewColumn Header="Album" DisplayMemberBinding="{Binding Album}" />
+                    <GridViewColumn Header="#" DisplayMemberBinding="{Binding TrackCount}" Width="Auto" />
+                    <GridViewColumn Header="Year" DisplayMemberBinding="{Binding Year}" Width="Auto"/>
+                    <GridViewColumn Header="Genre" DisplayMemberBinding="{Binding Genres}" Width="Auto" />
+                    <GridViewColumn Header="Duration" DisplayMemberBinding="{Binding Duration}" Width="Auto" />
+                    <GridViewColumn Header="BitRate" DisplayMemberBinding="{Binding BitRate}" Width="Auto"/>
                 </GridView>
             </ListView.View>
         </ListView>
