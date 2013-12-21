@@ -13,7 +13,7 @@ using File = System.IO.File;
 
 namespace xml_finder.Model
 {
-    internal class Track : ViewModel.ViewModelBase
+    public class Track : ViewModel.ViewModelBase
     {
         private String _title;
         private String[] _artists;
