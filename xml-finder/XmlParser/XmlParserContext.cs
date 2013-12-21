@@ -25,7 +25,7 @@ namespace xml_finder.XmlParser
             }
         }
         
-        XmlParserContext()
+        public XmlParserContext()
         {
             _strategy = XmlParserStrategy.LinqParser;
             ChooseParser();

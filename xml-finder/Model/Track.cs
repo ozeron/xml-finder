@@ -70,7 +70,7 @@ namespace xml_finder.Model
         }
         public String FirstOfArtists
         {
-            get { return (_artists != null) ? _artists[0] : null; }
+            get { return (_artists.GetLength(0) > 0) ? _artists[0] : ""; }
             set
             {
                 _artists = new[] { value };
@@ -80,7 +80,7 @@ namespace xml_finder.Model
         }
         public String FirstOfGenres
         {
-            get { return (_genres == null) ? null : _genres[0]; }
+            get { return (_genres.GetLength(0) > 0 ) ? _genres[0] : ""; }
             set
             {
                 _genres = new[] { value };
@@ -148,6 +148,8 @@ namespace xml_finder.Model
             var t = _file.Properties.Duration;
             _duration = new Time(t.Hours,t.Minutes,t.Seconds);
             _bitRate = _file.Properties.AudioBitrate;
+            
+            FixBadData();
         }
 
         public Track(String title, String album, String artist, String genre, uint year, uint trackCount, Time duration,
@@ -156,16 +158,39 @@ namespace xml_finder.Model
             _trackFullPath = trackFullPath;
             _file = TagLib.File.Create(@_trackFullPath);
 
-            _title = _file.Tag.Title;
-            _artists = _file.Tag.AlbumArtists;
-            _album = _file.Tag.Album;
-            _genres = _file.Tag.Genres;
-            _year = _file.Tag.Year;
-            _trackCount = _file.Tag.Track;
+            _title = title;
+            _artists = new [] {artist};
+            _album = album;
+            _genres = new [] {genre};
+            _year = year;
+            _trackCount = trackCount;
 
-            var t = _file.Properties.Duration;
-            _duration = new Time(t.Hours, t.Minutes, t.Seconds);
-            _bitRate = _file.Properties.AudioBitrate;
+            _duration = duration;
+            _bitRate = bitRate;
+
+            FixBadData();
+        }
+
+        private void FixBadData()
+        {
+            if (!(FirstOfArtists.Equals("") ||  _title.Equals("")))
+                return;
+
+            var f = new FileInfo(_trackFullPath);
+            string[] str = f.Name.Split('-','[',']');
+            int i = 0;
+            while (i < str.GetLength(0) && str[i].Equals(""))
+                i++;
+            var artist = str[i];
+            i++;
+            while (i < str.GetLength(0) && str[i].Equals(""))
+                i++;
+            var title = str[i].Trim(' ');
+
+            if (FirstOfArtists.Equals(""))
+                FirstOfArtists = artist;
+            if (Title == null || Title.Equals(""))
+                Title = title;
         }
         public override string ToString()
         {

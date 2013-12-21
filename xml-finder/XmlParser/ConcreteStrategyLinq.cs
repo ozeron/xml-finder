@@ -20,11 +20,10 @@ namespace xml_finder.XmlParser
 
         public ConcreteStrategyLinq() : this(FilePathBase)
         {
-            if (!File.Exists(_filePath))
-            {
+           // if (!File.Exists(_filePath))
+            //{
                 CreateSampleData();
-                Debug.WriteLine("");
-            }
+            //}
         }
         public ConcreteStrategyLinq(String filePath)
         {
@@ -39,11 +38,10 @@ namespace xml_finder.XmlParser
             //Создание вложенными конструкторами.
             var doc = new XDocument();
             var library = new XElement("library");
-            var files = Directory.GetFiles(@"D:\MUSIC\Eminem\The Marshall Mathers LP 2 [2013]\CD 1");
+            var files = Directory.GetFiles(@"D:\MUSIC\");
             foreach (var file in files)
             {
-                var fileInfo = new FileInfo(file);
-                var extension = fileInfo.Extension;
+                var extension = (new FileInfo(file)).Extension;
                 if (extension.Equals(".mp3"))
                     library.Add( AddTrack(file)) ;
             }
@@ -101,8 +99,6 @@ namespace xml_finder.XmlParser
             var library = (from track in tracks select track.Element("TrackPath") into trackPath
                            where trackPath != null select trackPath.Value into path
                            select new Track(path)).ToList();
-
-            Debug.WriteLine("xml parsed {0} elements in {1}", library.Count, _document);
             return library;
         }
     }

@@ -20,7 +20,9 @@ namespace xml_finder
         void StartApp(object sender, StartupEventArgs e)
         {
             var parser = new ConcreteStrategyLinq();
-            this.Shutdown();
+            var mwd = new MainWindow();
+            mwd.Show();
+            //this.Shutdown();
         }
     }
 }

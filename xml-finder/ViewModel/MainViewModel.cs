@@ -6,13 +6,22 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using xml_finder.Model;
+using xml_finder.XmlParser;
 
 namespace xml_finder.ViewModel
 {
-    class MainViewModel //: ViewModelBase
+    class MainViewModel : ViewModelBase
     {
         private List<Track> _tracks;
+        private XmlParserContext _xmlParserContext;
 
+        public XmlParserContext XmlParserContext
+        {
+            get
+            {
+                return _xmlParserContext; 
+            }
+        }
         public List<Track> Tracks
         {
             get
@@ -25,14 +34,12 @@ namespace xml_finder.ViewModel
                 RaisePropertyChanged("Tracks");
             }
         }
-        public event PropertyChangedEventHandler PropertyChanged;
 
-        public void RaisePropertyChanged(string propertyName)
+        public MainViewModel()
         {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            }
+            _xmlParserContext = new XmlParserContext();
+            _xmlParserContext.ConcreteXmlParser.LoadDocument("res/data.xml");
+            Tracks = _xmlParserContext.ConcreteXmlParser.ParseTracks();
         }
     }
 }
