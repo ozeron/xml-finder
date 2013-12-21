@@ -13,7 +13,7 @@ using File = System.IO.File;
 
 namespace xml_finder.Model
 {
-    public class Track : ViewModel.ViewModelBase
+    class Track : ViewModel.ViewModelBase
     {
         private String _title;
         private String[] _artists;
@@ -150,6 +150,23 @@ namespace xml_finder.Model
             _bitRate = _file.Properties.AudioBitrate;
         }
 
+        public Track(String title, String album, String artist, String genre, uint year, uint trackCount, Time duration,
+            int bitRate, String trackFullPath)
+        {
+            _trackFullPath = trackFullPath;
+            _file = TagLib.File.Create(@_trackFullPath);
+
+            _title = _file.Tag.Title;
+            _artists = _file.Tag.AlbumArtists;
+            _album = _file.Tag.Album;
+            _genres = _file.Tag.Genres;
+            _year = _file.Tag.Year;
+            _trackCount = _file.Tag.Track;
+
+            var t = _file.Properties.Duration;
+            _duration = new Time(t.Hours, t.Minutes, t.Seconds);
+            _bitRate = _file.Properties.AudioBitrate;
+        }
         public override string ToString()
         {
             var str = new StringBuilder();

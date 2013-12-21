@@ -13,6 +13,6 @@ namespace xml_finder.XmlParser
         void SaveDocument();
         void SaveDocument(String path);
 
-        List<Track> ParseDocument();
+        List<Track> ParseTracks();
     }
 }
