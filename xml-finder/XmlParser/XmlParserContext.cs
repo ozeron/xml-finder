@@ -6,10 +6,24 @@ using System.Threading.Tasks;
 
 namespace xml_finder.XmlParser
 {
-    public class XmlParserContext
+    class XmlParserContext
     {
         private IXmlParserStrategy _concreteXmlParser;
         private XmlParserStrategy _strategy;
+
+        public IXmlParserStrategy ConcreteXmlParser
+        {
+            get { return _concreteXmlParser; }
+        }
+        public XmlParserStrategy Strategy
+        {
+            get { return _strategy; }
+            set
+            {
+                _strategy = value;
+                ChooseParser();
+            }
+        }
         
         XmlParserContext()
         {
