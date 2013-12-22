@@ -3,35 +3,47 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
+using System.IO;
 using xml_finder.Model;
 
 namespace xml_finder.XmlParser
 {
     class ConcreteStrategySax : IXmlParserStrategy
     {
-        public ConcreteStrategySax()
-        {
-            
+        private XmlReader _document;
+        private String _filePath;
+        private const String FilePathBase = "res/data.xml";
+        private Dictionary<String, String> _dictionary = new Dictionary<string, string>();
+
+        public ConcreteStrategySax() : this(FilePathBase)
+        {     
         }
-        //TODO: Implement Sax Parser
+        public ConcreteStrategySax(String path)
+        {
+            _filePath = path;
+            LoadDocument(path);
+        }
+
         public void LoadDocument(string path)
         {
-            throw new NotImplementedException();
+            _document = XmlReader.Create(path);
         }
 
-        public void SaveDocument()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void SaveDocument(string path)
-        {
-            throw new NotImplementedException();
-        }
 
         public List<Track> ParseTracks()
         {
-            throw new NotImplementedException();
+            var library = new List<Track>();
+            while (_document.Read())
+            {
+                if (_document.Name.Equals("TrackPath"))
+                {
+                    _document.Read();
+                    if (_document.NodeType == XmlNodeType.Text)
+                        library.Add(new Track(@_document.Value));
+                }
+            }
+            return library;
         }
     }
 }
