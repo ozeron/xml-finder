@@ -22,7 +22,7 @@ namespace xml_finder.XmlParser
         {
            // if (!File.Exists(_filePath))
             //{
-                CreateSampleData();
+            //    CreateSampleData();
             //}
         }
         public ConcreteStrategyLinq(String filePath)
@@ -79,17 +79,6 @@ namespace xml_finder.XmlParser
             Debug.WriteLine("xml loaded: {0}",_document);
             
         }
-        public void SaveDocument()
-        {
-            _document.Save(_filePath);
-            Debug.WriteLine("xml saved to '{0}': {1}", _filePath, _document);
-        }
-        public void SaveDocument(String path)
-        {
-            _document.Save(path);
-            Debug.WriteLine("xml saved to '{0}': {1}", path, _document);
-        }
-
         public List<Track> ParseTracks()
         {
             if (_document.Root == null)

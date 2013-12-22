@@ -1,37 +1,56 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 using xml_finder.Model;
 
 namespace xml_finder.XmlParser
 {
     class ConcreteStrategyDom : IXmlParserStrategy
     {
-        public ConcreteStrategyDom()
+        private XmlDocument _document;
+        private String _filePath;
+        private const String FilePathBase = "res/data.xml";
+        private Dictionary<String, String> _dictionary = new Dictionary<string, string>(); 
+
+        public ConcreteStrategyDom() : this(FilePathBase)
         {
             
         }
-        //TODO: Implement Dom Parser
+        public ConcreteStrategyDom(String path)
+        {
+            _filePath = path; 
+            _document = new XmlDocument();
+        }
         public void LoadDocument(string path)
         {
-            throw new NotImplementedException();
+            _document.Load(path);
         }
 
-        public void SaveDocument()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void SaveDocument(string path)
-        {
-            throw new NotImplementedException();
-        }
 
         public List<Track> ParseTracks()
         {
-            throw new NotImplementedException();
+            var library = new List<Track>();
+            if (_document.FirstChild == null)
+                throw new DataException("xml document root is null");
+            var root = _document.FirstChild.NextSibling;
+            foreach (XmlNode node in root.ChildNodes)
+            {
+                if (!node.Name.Equals("Track"))
+                    continue;
+                foreach (XmlNode child in node.ChildNodes)
+                {
+                    _dictionary.Add(child.Name, child.InnerText);
+                }
+                string path = "";
+                if ( _dictionary.TryGetValue("TrackPath",out path) && path != null)
+                    library.Add( new Track(path));
+                _dictionary = new Dictionary<string, string>();
+            }
+            return library;
         }
     }
 }

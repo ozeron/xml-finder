@@ -9,10 +9,8 @@ namespace xml_finder.XmlParser
 {
     interface IXmlParserStrategy
     {
-        void LoadDocument(String path);
-        void SaveDocument();
-        void SaveDocument(String path);
 
+        void LoadDocument(String path);
         List<Track> ParseTracks();
     }
 }
