@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,6 +22,7 @@ namespace xml_finder.XmlParser
             set
             {
                 _strategy = value;
+                Debug.WriteLine("Strategy changed to {0}",_strategy);
                 ChooseParser();
             }
         }
@@ -29,6 +31,7 @@ namespace xml_finder.XmlParser
         {
             _strategy = XmlParserStrategy.LinqParser;
             ChooseParser();
+
         }
 
         private void ChooseParser()
@@ -57,7 +60,7 @@ namespace xml_finder.XmlParser
 
     public enum XmlParserStrategy
     {
-        DomParser,
+        DomParser =0,
         LinqParser,
         SaxParser
     };

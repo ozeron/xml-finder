@@ -38,17 +38,27 @@ namespace xml_finder.XmlParser
             //Создание вложенными конструкторами.
             var doc = new XDocument();
             var library = new XElement("library");
-            var files = Directory.GetFiles(@"D:\MUSIC\");
+            StartProcess(library, @"D:\MUSIC");
+            doc.Add(library);
+            doc.Save(_filePath);
+        }
+
+        private void StartProcess( XElement el, string path)
+        {
+            var files = Directory.GetFiles(@path);
+            var dir = Directory.GetDirectories(@path);
             foreach (var file in files)
             {
                 var extension = (new FileInfo(file)).Extension;
                 if (extension.Equals(".mp3"))
-                    library.Add( AddTrack(file)) ;
+                    el.Add(AddTrack(file));
             }
-            doc.Add(library);
-            doc.Save(_filePath);
+            foreach (var d in dir)
+            {
+                StartProcess(el,d);
+            }
         }
-        public XElement AddTrack(String path)
+        private  XElement AddTrack(String path)
         {
             var f = new FileInfo(path);
             

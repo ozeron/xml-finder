@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Security.Permissions;
 using System.Windows.Media;
@@ -113,7 +114,7 @@ namespace xml_finder.Model
         {
             get { return _duration; }
         }
-        public Int32 BitRate
+        public int BitRate
         {
             get { return _bitRate; }
         }
@@ -177,20 +178,13 @@ namespace xml_finder.Model
                 return;
 
             var f = new FileInfo(_trackFullPath);
-            string[] str = f.Name.Split('-','[',']');
+            string[] str = f.Name.Split(new []{'-','[',']'},StringSplitOptions.RemoveEmptyEntries);
             int i = 0;
-            while (i < str.GetLength(0) && str[i].Equals(""))
-                i++;
-            var artist = str[i];
-            i++;
-            while (i < str.GetLength(0) && str[i].Equals(""))
-                i++;
-            var title = str[i].Trim(' ');
 
-            if (FirstOfArtists.Equals(""))
-                FirstOfArtists = artist;
-            if (Title == null || Title.Equals(""))
-                Title = title;
+            if (FirstOfArtists == null && FirstOfArtists.Equals(""))
+                FirstOfArtists = str[0];
+            if (Title == null || Title.Equals("") && str.Length >= 2)
+                Title = str[1];
         }
         public override string ToString()
         {
@@ -207,5 +201,33 @@ namespace xml_finder.Model
             return st;
         }
 
+        public string GetData(string data)
+        {
+            switch (data)
+            {
+                case "Title":
+                    return _title;
+                case "Artist":
+                    return (_artists.GetLength(0) > 0) ? _artists[0] : "";
+                case "Album":
+                    return _album;
+                case "#":
+                    return _trackCount.ToString();
+                case "Year":
+                    return _year.ToString();
+                case "Genres":
+                    return _genres[0];
+                case "Duration":
+                    return _duration.ToString();
+                case "BitRate":
+                    return _bitRate.ToString();
+                case "FirstOfArtists":
+                    return (_artists.GetLength(0) > 0) ? _artists[0] : "";
+                case "FirstOfGenres":
+                    return(_genres.GetLength(0) > 0) ? _genres[0] : "";
+                default:
+                    return _trackFullPath;
+            }
+        }
     }
 }

@@ -21,16 +21,29 @@
             <ColumnDefinition Width="10"/>
         </Grid.ColumnDefinitions>
         <TextBlock Text ="TextBlock" VerticalAlignment="Center" Height="22" Margin="9,3.6,91,4.8" Grid.Row="1" Grid.Column="0"  TextWrapping="Wrap" Grid.ColumnSpan="2" />
-        <ComboBox Grid.Column="1" Width="90" Grid.Row="1" Margin="0,4,0,4">
-            <ComboBoxItem IsSelected="True">LinQ</ComboBoxItem>
-            <ComboBoxItem >DOM</ComboBoxItem>
+        <ComboBox Grid.Column="1" Width="90" Grid.Row="1" Margin="0,4,0,4" SelectedIndex="{Binding XmlParserContext.Strategy, Mode=TwoWay}">
+            <ComboBoxItem IsSelected="True">DOM</ComboBoxItem>
+            <ComboBoxItem >LinQ</ComboBoxItem>
             <ComboBoxItem >SAX API</ComboBoxItem>
         </ComboBox>
 
-        <TextBox x:Name="EditFilePath" Text="TextBox" Grid.ColumnSpan="2" Height="25" Width="382" Margin="9,3,0,2.4" Grid.Row="0" Grid.Column="0" TextWrapping="Wrap" VerticalAlignment="Center" HorizontalAlignment="Left" BorderThickness="0.1,0.1,0.1,0.1" >
+        <ComboBox SelectedItem="{Binding ActiveFilter, Mode=TwoWay}" Grid.Row="1" Grid.Column="2" Width="200" HorizontalAlignment="Left" Margin="4,4,4,4">
+            <ComboBoxItem>None</ComboBoxItem>
+            <ComboBoxItem IsSelected="True">Artist</ComboBoxItem>
+            <ComboBoxItem>Title</ComboBoxItem>
+            <ComboBoxItem>Album</ComboBoxItem>
+            <ComboBoxItem>#</ComboBoxItem>
+            <ComboBoxItem>Year</ComboBoxItem>
+            <ComboBoxItem>Genre</ComboBoxItem>
+            <ComboBoxItem>Duration</ComboBoxItem>
+            <ComboBoxItem>BitRate</ComboBoxItem>
+            <ComboBoxItem>FilePath</ComboBoxItem>
+        </ComboBox>
+
+        <TextBox x:Name="EditFilePath" Text="{Binding InputQuery, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.ColumnSpan="2" Height="25" Width="382" Margin="9,3,0,2.4" Grid.Row="0" Grid.Column="0" TextWrapping="Wrap" VerticalAlignment="Center" HorizontalAlignment="Left" BorderThickness="0.1,0.1,0.1,0.1" >
 
         </TextBox>
-        <ListView Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Width="Auto" ItemsSource="{Binding Tracks, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Stretch" Margin="10,0.2,4.2,0.4" >
+        <ListView Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Width="Auto" ItemsSource="{Binding ShowableTracks, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Stretch" Margin="10,0.2,4.2,0.4" >
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Artist" DisplayMemberBinding="{Binding FirstOfArtists}" />
@@ -46,6 +59,7 @@
             </ListView.View>
 
         </ListView>
+        <Button Content="Transform to XML" Grid.Column="2" Grid.Row="0" HorizontalAlignment="Left" Margin="4,4,0,0" VerticalAlignment="Top" Width="110"/>
     </Grid>
 
 
