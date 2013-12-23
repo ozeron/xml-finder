@@ -5,7 +5,7 @@
         Title="MainWindow" Height="600" Width="920" Background="#FFD6DBE9"
         >
     <Window.DataContext>
-        <local:MainViewModel />
+        <local:MainViewModel/>
     </Window.DataContext>
     <Grid>
         <Grid.RowDefinitions>
@@ -30,8 +30,8 @@
         <ComboBox SelectedItem="{Binding ActiveFilter, Mode=TwoWay}" Grid.Row="1" Grid.Column="2" Width="200" HorizontalAlignment="Left" Margin="4,4,4,4">
             <ComboBoxItem>None</ComboBoxItem>
             <ComboBoxItem IsSelected="True">Artist</ComboBoxItem>
+            <ComboBoxItem>Album</ComboBoxItem >
             <ComboBoxItem>Title</ComboBoxItem>
-            <ComboBoxItem>Album</ComboBoxItem>
             <ComboBoxItem>#</ComboBoxItem>
             <ComboBoxItem>Year</ComboBoxItem>
             <ComboBoxItem>Genre</ComboBoxItem>
@@ -59,7 +59,7 @@
             </ListView.View>
 
         </ListView>
-        <Button Content="Transform to XML" Grid.Column="2" Grid.Row="0" HorizontalAlignment="Left" Margin="4,4,0,0" VerticalAlignment="Top" Width="110"/>
+        <Button Content="Transform to html" Command="{Binding Transform}" Grid.Column="2" Grid.Row="0" HorizontalAlignment="Left" Margin="4,4,0,0" VerticalAlignment="Top" Width="110"/>
     </Grid>
 
 

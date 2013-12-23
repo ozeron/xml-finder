@@ -62,11 +62,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Commands\TransformCommand.cs" />
     <Compile Include="Model\Time.cs" />
     <Compile Include="Model\Track.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
-    <Compile Include="ViewModel\RelayClass.cs" />
+    <Compile Include="Commands\RelayCommand.cs" />
     <Compile Include="ViewModel\ViewModelBase.cs" />
     <Compile Include="XmlParser\ConcreteStrategyDom.cs" />
     <Compile Include="XmlParser\ConcreteStrategyLinq.cs" />

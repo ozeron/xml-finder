@@ -7,6 +7,8 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
+using System.Windows.Input;
+using xml_finder.Commands;
 using xml_finder.Model;
 using xml_finder.XmlParser;
 
@@ -19,7 +21,16 @@ namespace xml_finder.ViewModel
         private readonly XmlParserContext _xmlParserContext;
         private String _inputQuery ="";
         private String _activeFilter = "";
-
+        private TransformCommand _transform;
+        
+        public TransformCommand Transform
+        { get { return _transform; }
+          set
+            {
+                _transform = value;
+                RaisePropertyChanged("Transform");
+            } 
+        }
 
         public String InputQuery
         {
@@ -87,14 +98,17 @@ namespace xml_finder.ViewModel
             var showableTracks = new List<Track>(_tracks);
             for (int i = 0; i < showableTracks.Count;)
             {
-                string data = showableTracks[i].GetData(_activeFilter);
-                if (! data.ToLower().Contains(_inputQuery.ToLower()))
+                string data = showableTracks[i].GetData(_activeFilter).ToLower();
+                string query = _inputQuery.ToLower();
+                if (! data.Contains(query))
                     showableTracks.RemoveAt(i);
                 else
                     i++;
             }
+            
             _showableTracks = showableTracks;
             RaisePropertyChanged("ShowableTracks");
+            Transform = new TransformCommand(_showableTracks);
         }
         public MainViewModel()
         {
@@ -102,7 +116,9 @@ namespace xml_finder.ViewModel
             _xmlParserContext = new XmlParserContext();
             _xmlParserContext.ConcreteXmlParser.LoadDocument("res/data.xml");
             Tracks = _xmlParserContext.ConcreteXmlParser.ParseTracks();
-            
+            _transform = new TransformCommand(_showableTracks);
         }
+
+
     }
 }
