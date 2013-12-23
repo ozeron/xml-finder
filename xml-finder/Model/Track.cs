@@ -16,15 +16,15 @@ namespace xml_finder.Model
 {
     class Track : ViewModel.ViewModelBase
     {
-        private String _title;
-        private String[] _artists;
-        private String _album;
-        private String[] _genres;
-        private uint _year;
-        private uint _trackCount;
+        private String _title = "";
+        private String[] _artists = new []{""};
+        private String _album = "";
+        private String[] _genres = new []{""};
+        private uint _year = 0;
+        private uint _trackCount=0;
 
-        private readonly Time _duration;
-        private readonly Int32 _bitRate;
+        private readonly Time _duration=new Time();
+        private readonly Int32 _bitRate = 0;
 
         private readonly String _trackFullPath;
         private readonly TagLib.File _file;
@@ -174,6 +174,9 @@ namespace xml_finder.Model
 
         private void FixBadData()
         {
+            if (_album == null) _album = "";
+            if (_genres == null) _genres = new[]{""} ;
+
             if (!(FirstOfArtists.Equals("") ||  _title.Equals("")))
                 return;
 
