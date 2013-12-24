@@ -105,7 +105,7 @@ namespace xml_finder.ViewModel
         public void Search()
         {
             var showableTracks = new List<Track>(_tracks);
-            if (_activeFilter.Equals("None"))
+            if (_activeFilter.Equals("None") || _activeFilter.Equals("System.Windows.Controls.ComboBoxItem"))
                 return;
             Tracks = _xmlParserContext.ConcreteXmlParser.Filter(_activeFilter, _inputQuery);
             Transform = new TransformCommand(Tracks);

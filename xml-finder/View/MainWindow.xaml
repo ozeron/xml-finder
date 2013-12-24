@@ -28,8 +28,8 @@
         </ComboBox>
 
         <ComboBox SelectedItem="{Binding ActiveFilter, Mode=TwoWay}" Grid.Row="1" Grid.Column="2" Width="200" HorizontalAlignment="Left" Margin="4,4,4,4">
-            <!--ComboBoxItem >None</ComboBoxItem-->
-            <ComboBoxItem IsSelected="True">Artist</ComboBoxItem>
+            <ComboBoxItem IsSelected="True">None</ComboBoxItem>
+            <ComboBoxItem >Artist</ComboBoxItem>
             <ComboBoxItem>Title</ComboBoxItem>
             <ComboBoxItem>Album</ComboBoxItem >
             <ComboBoxItem>#</ComboBoxItem>
