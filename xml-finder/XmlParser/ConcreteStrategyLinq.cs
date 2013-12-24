@@ -20,16 +20,15 @@ namespace xml_finder.XmlParser
 
         public ConcreteStrategyLinq() : this(FilePathBase)
         {
-           // if (!File.Exists(_filePath))
-            //{
-            //    CreateSampleData();
-            //}
         }
         public ConcreteStrategyLinq(String filePath)
         {
             _filePath = filePath;
+            LoadDocument(_filePath);
         }
         
+         
+
         public void CreateSampleData()
         {
             _filePath = FilePathBase;
@@ -38,12 +37,11 @@ namespace xml_finder.XmlParser
             //Создание вложенными конструкторами.
             var doc = new XDocument();
             var library = new XElement("library");
-            StartProcess(library, @"D:\MUSIC");
+            RecursiveProcess(library, @"D:\MUSIC");
             doc.Add(library);
             doc.Save(_filePath);
         }
-
-        private void StartProcess( XElement el, string path)
+        private void RecursiveProcess( XElement el, string path)
         {
             var files = Directory.GetFiles(@path);
             var dir = Directory.GetDirectories(@path);
@@ -55,7 +53,7 @@ namespace xml_finder.XmlParser
             }
             foreach (var d in dir)
             {
-                StartProcess(el,d);
+                RecursiveProcess(el,d);
             }
         }
         private  XElement AddTrack(String path)
@@ -99,6 +97,19 @@ namespace xml_finder.XmlParser
                            where trackPath != null select trackPath.Value into path
                            select new Track(path)).ToList();
             return library;
+        }
+
+        public List<Track> Filter(string element, string value)
+        {
+            if (_document.Root == null)
+                throw new DataException("xml document root is null");
+            var tracks = _document.Root.Nodes();
+            return (from XElement track in tracks
+                    let el = track.Element(element)
+                    let tp = track.Element("TrackPath")
+                    where el != null && tp != null
+                    && el.Value.ToLower().Contains(value.ToLower())
+                    select new Track(tp.Value)).ToList();
         }
     }
 }

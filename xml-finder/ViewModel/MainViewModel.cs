@@ -20,7 +20,7 @@ namespace xml_finder.ViewModel
         private List<Track> _showableTracks; 
         private readonly XmlParserContext _xmlParserContext;
         private String _inputQuery ="";
-        private String _activeFilter = "";
+        private String _activeFilter = "None";
         private TransformCommand _transform;
         
         public TransformCommand Transform
@@ -51,6 +51,17 @@ namespace xml_finder.ViewModel
             get
             {
                 return _xmlParserContext; 
+            }
+        }
+
+        public XmlParserStrategy XmlParserStrategy
+        {
+            get { return XmlParserContext.Strategy; }
+            set
+            {
+                XmlParserContext.SetStrategy(value);
+                Search();
+                RaisePropertyChanged("XmlParserContext");
             }
         }
         public List<Track> Tracks
@@ -93,22 +104,11 @@ namespace xml_finder.ViewModel
 
         public void Search()
         {
+            var showableTracks = new List<Track>(_tracks);
             if (_activeFilter.Equals("None"))
                 return;
-            var showableTracks = new List<Track>(_tracks);
-            for (int i = 0; i < showableTracks.Count;)
-            {
-                string data = showableTracks[i].GetData(_activeFilter).ToLower();
-                string query = _inputQuery.ToLower();
-                if (! data.Contains(query))
-                    showableTracks.RemoveAt(i);
-                else
-                    i++;
-            }
-            
-            _showableTracks = showableTracks;
-            RaisePropertyChanged("ShowableTracks");
-            Transform = new TransformCommand(_showableTracks);
+            Tracks = _xmlParserContext.ConcreteXmlParser.Filter(_activeFilter, _inputQuery);
+            Transform = new TransformCommand(Tracks);
         }
         public MainViewModel()
         {
