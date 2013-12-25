@@ -93,11 +93,12 @@ namespace xml_finder.XmlParser
                 throw new DataException("xml document root is null");
 
             var tracks = _document.Root.Elements("Track");
-            var library = (from track in tracks select track.Element("TrackPath") into trackPath
-                           where trackPath != null select trackPath.Value into path
-                           select new Track(path)).ToList();
-            return library;
-        }
+            return (from track in tracks 
+                    select track.Element("TrackPath") into trackPath
+                    where trackPath != null 
+                    select trackPath.Value into path 
+                    select new Track(path)).ToList();
+}
 
         public List<Track> Filter(string element, string value)
         {

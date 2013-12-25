@@ -176,6 +176,7 @@ namespace xml_finder.Model
         {
             if (_album == null) _album = "";
             if (_genres == null) _genres = new[]{""} ;
+            if (_artists == null) _artists = new[] {""};
 
             if (!(FirstOfArtists.Equals("") ||  _title.Equals("")))
                 return;
@@ -184,7 +185,7 @@ namespace xml_finder.Model
             string[] str = f.Name.Split(new []{'-','[',']'},StringSplitOptions.RemoveEmptyEntries);
             int i = 0;
 
-            if (FirstOfArtists == null && FirstOfArtists.Equals(""))
+            if (FirstOfArtists == null || FirstOfArtists.Equals(""))
                 FirstOfArtists = str[0];
             if (Title == null || Title.Equals("") && str.Length >= 2)
                 Title = str[1];
